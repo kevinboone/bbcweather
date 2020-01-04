@@ -1,7 +1,7 @@
 /*==========================================================================
 bbcweatherj
 main.c
-Copyright (c)2017 Kevin Boone, GPLv3.0
+Copyright (c)2020 Kevin Boone, GPLv3.0
 *==========================================================================*/
 
 #define _GNU_SOURCE
@@ -264,7 +264,7 @@ int main (int argc, char **argv)
   if (show_version)
     {
     printf ("%s " VERSION "\n", argv[0]);
-    printf ("Copyright (c)2017 Kevin Boone\n");
+    printf ("Copyright (c)2012-2020 Kevin Boone\n");
     printf ("Distributed under the terms of the GPL, v3.0\n");
     OUT
     exit (0);
@@ -314,7 +314,6 @@ int main (int argc, char **argv)
 
     char *feed_uri = weather_feed_make_uri (loc_code, observations);
     feed_fetch (feed_uri, &resp, &error);
-printf ("resp=%s\n", resp);
     free (feed_uri);
 
     if (error)
