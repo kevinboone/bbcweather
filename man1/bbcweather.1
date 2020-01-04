@@ -1,0 +1,80 @@
+.TH bbcweather 1 "July 2017"
+.SH NAME
+Show BBC weather reports
+.SH SYNOPSIS
+.B bbcweather 
+[options]\ [location or code]
+.PP
+
+.SH DESCRIPTION
+
+\fIbbcweather\fR is a utility for Linux for displaying weather forecasts
+or observations from the BBC in a console.
+ 
+
+.SH EXAMPLES
+
+.BI bbcweather\ Sheffield
+
+Show forecast for Sheffield (if it is in the location data file -- see below)
+
+.BI bbcweather\ -o\ 2633352
+
+Show current observations for the location with code 2633352 (York, UK)
+
+
+
+.SH "OPTIONS"
+
+.TP
+.BI \-e,\-\-exact
+When searching in the location data file, only accept exact matches, 
+not substrings. This might be necessary if some names are substrings of
+another. For example, "Bury" and "Newbury" will both match the input
+"bury" unless exact matching is specified
+.LP
+.TP
+.BI \-l,\-\-locations
+List all locations in the location data file
+.LP
+.TP
+.BI \-o,\-\-observations
+Show current observations, rather than a forecast
+.LP
+.TP
+.BI \-w,\-\-width N
+For layout purposes, assume that the screen width is N columns. This setting
+is ignored if output is not to a terminal. If the output is to a terminal,
+the screen width can usually be determined automatically
+.LP
+
+.SH Location data file
+
+The location data file is usually \fI/usr/share/bbcweather/locations.dat\fR. It
+consists of one line for each location, where a line consists of a numeric
+code, and a name. The name can contain spaces, but spaces make entering information
+on the command line awkward. Unless \fI--exact\fR is specified, the locations
+in the file are matched by substring, so the user need not enter a complete
+name. However, the match must be unambiguous.
+
+The supplied location data file should be regarded as a sample only. It contains
+a hundred or so UK towns and cities. The UK being what it is, the same 
+place names turn up over and over, and there is no obvious way to know which 
+particular town is meant. Generally, the built-in list favours larger cities
+over smaller ones with the same name, but the smaller ones might be better
+known. In general, it is expected that users will compile their own data file,
+based on locations of interest. 
+
+There is no complete list of numeric place name codes used by the BBC, and the
+codes do not seem to follow any known location scheme. The easiest way to find
+the location code for a particular place is probably to search for the place on the
+BBC website, and look at the URL in the browser.
+
+.SH Notes 
+
+The BBC location codes are all numeric so, if the argument to
+\fIbbcweather\fR is a number, it is treated as a location code, and
+no lookup is done in the location data file.
+
+ 
+.\" end of file
