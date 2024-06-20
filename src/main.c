@@ -21,6 +21,7 @@ Copyright (c)2020 Kevin Boone, GPLv3.0
 #include "feed.h"
 #include "formatter.h"
 #include "list.h"
+#include "config.h"
 
 // Maximum length of a BBC location code (it's probably not this long)
 #define LOC_CODE_MAX 20
@@ -202,6 +203,7 @@ int main (int argc, char **argv)
   BOOL show_usage = FALSE;
   BOOL exact = FALSE;
   BOOL observations = FALSE;
+  BOOL force_format = FALSE;
 
   static struct option long_options[] = 
    {
@@ -211,6 +213,7 @@ int main (int argc, char **argv)
      {"observations", no_argument, NULL, 'o'},
      {"version", no_argument, NULL, 'v'},
      {"width", required_argument, NULL, 'w'},
+     {"force-format", no_argument, NULL, 'f'},
      {0, 0, 0, 0}
    };
 
@@ -218,7 +221,7 @@ int main (int argc, char **argv)
   while (1)
    {
    int option_index = 0;
-   opt = getopt_long (argc, argv, "?vlhw:eo",
+   opt = getopt_long (argc, argv, "?vlhw:eof",
      long_options, &option_index);
 
    if (opt == -1) break;
@@ -236,6 +239,8 @@ int main (int argc, char **argv)
          observations = TRUE;
        else if (strcmp (long_options[option_index].name, "version") == 0)
          show_version = TRUE;
+       else if (strcmp (long_options[option_index].name, "force-format") == 0)
+         force_format = TRUE;
        else if (strcmp (long_options[option_index].name, "width") == 0)
          width = atoi (optarg);
        else
@@ -246,6 +251,7 @@ int main (int argc, char **argv)
        break;
 
      case 'e': exact = TRUE; break;
+     case 'f': force_format = TRUE; break;
      case 'h': case '?': show_usage = TRUE; break;
      case 'l': show_locations = TRUE; break;
      case 'o': observations = TRUE; break;
@@ -264,7 +270,7 @@ int main (int argc, char **argv)
   if (show_version)
     {
     printf ("%s " VERSION "\n", argv[0]);
-    printf ("Copyright (c)2012-2020 Kevin Boone\n");
+    printf ("Copyright (c)2012-2024 Kevin Boone\n");
     printf ("Distributed under the terms of the GPL, v3.0\n");
     OUT
     exit (0);
@@ -273,11 +279,12 @@ int main (int argc, char **argv)
   if (show_usage)
     {
     printf ("Usage: %s [options] [location or code]\n", argv[0]);
+    printf ("  -e, --exact           disable partial name searches\n");
+    printf ("  -f, --format          format output, even if not tty\n");
     printf ("  -l, --locations       list locations\n");
     printf ("  -o, --observations    show observations, not forecast\n");
     printf ("  -v, --version         show version information\n");
     printf ("  -w, --width           screen width in columns\n");
-    printf ("  -e, --exact           disable partial name searches\n");
     OUT
     exit (0);
     }
@@ -294,7 +301,7 @@ int main (int argc, char **argv)
   if (argc > optind)
     location = argv[optind]; 
   else
-    location = "London";
+    location = DEFAULT_LOCATION;
 
   char loc_code[LOC_CODE_MAX + 1];
   loc_code[0] = 0;
@@ -327,7 +334,7 @@ int main (int argc, char **argv)
       context.width = width; 
       context.no_wrap = FALSE; 
       context.no_highlight = FALSE; 
-      if (!istty)
+      if (!istty && !force_format)
         {
         context.no_wrap = TRUE; 
         context.no_highlight = TRUE; 

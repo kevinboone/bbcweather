@@ -9,12 +9,13 @@ Show BBC weather reports
 .SH DESCRIPTION
 
 \fIbbcweather\fR is a utility for Linux for displaying weather forecasts
-or observations from the BBC in a console.
+or observations from the BBC in a console. This utility will only work in
+regions where the BBC provides a service.
  
 
 .SH EXAMPLES
 
-.BI bbcweather\ Sheffield
+.BI bbcweather\ sheffield
 
 Show forecast for Sheffield (if it is in the location data file -- see below)
 
@@ -31,21 +32,25 @@ Show current observations for the location with code 2633352 (York, UK)
 When searching in the location data file, only accept exact matches, 
 not substrings. This might be necessary if some names are substrings of
 another. For example, "Bury" and "Newbury" will both match the input
-"bury" unless exact matching is specified
+"bury" unless exact matching is specified.
+.LP
+.TP
+.BI \-f,\-\-force-format
+Format the display even if the output is not to a terminal. You might
+do this if you want to pipe the output into \fIless -R\fR.
 .LP
 .TP
 .BI \-l,\-\-locations
-List all locations in the location data file
+List all locations in the location data file.
 .LP
 .TP
 .BI \-o,\-\-observations
-Show current observations, rather than a forecast
+Show current observations, rather than a forecast.
 .LP
 .TP
 .BI \-w,\-\-width N
-For layout purposes, assume that the screen width is N columns. This setting
-is ignored if output is not to a terminal. If the output is to a terminal,
-the screen width can usually be determined automatically
+For layout purposes, assume that the screen width is N columns.  If the output
+is to a terminal, the screen width can usually be determined automatically.
 .LP
 
 .SH Location data file

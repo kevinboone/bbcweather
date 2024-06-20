@@ -21,6 +21,7 @@ Copyright (c)2017 Kevin Boone, GPLv3.0
 #include "sxmlc.h"
 #include "utf32_string.h"
 #include "formatter.h"
+#include "config.h"
 
 /*==========================================================================
 formatter_parse_and_display_rss
@@ -35,12 +36,12 @@ void formatter_output (const FormatterContext *context, int flags,
     {
     if (flags & FMTFLAG_H1)
       {
-      fputs ("\x1B[7m", stdout);
+      fputs (ANSI_H1, stdout);
       }
 
     if (flags & FMTFLAG_H2)
       {
-      fputs ("\x1B[4m", stdout);
+      fputs (ANSI_H2, stdout);
       }
     }
 
@@ -106,6 +107,7 @@ void formatter_output (const FormatterContext *context, int flags,
     if (word_buff_len > 0)
       {
       word_buff [word_buff_len] = 0;
+      if (word_buff_len + line_len >= max_line_len) fputs ("\n", stdout);
       char *utf8 = utf32_string_convert_to_utf8 (word_buff);
       fputs (utf8, stdout);
       free (utf8);
